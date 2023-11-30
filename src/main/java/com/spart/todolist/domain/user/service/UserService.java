@@ -44,9 +44,9 @@ public class UserService {
     }
 
     /////////////////////////////////////////////////////////////////
-    public UserDetails getUser(String username) {
+    public UserDetails getUserDetails(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new UsernameNotFoundException("존재하지 않는 username 입니다.")
+            () -> new UsernameNotFoundException("존재하지 않는 user 입니다.")
         );
         return new UserDetailsImpl(user);
     }
