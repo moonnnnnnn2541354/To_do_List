@@ -3,7 +3,10 @@ package com.spart.todolist.domain.user.service;
 import com.spart.todolist.domain.user.dto.UserRequestDto;
 import com.spart.todolist.domain.user.entity.User;
 import com.spart.todolist.domain.user.repository.UserRepository;
+import com.spart.todolist.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +33,22 @@ public class UserService {
         userRepository.save(user);
     }
 
-    /////////////////////////////////////////////////////////////////
+    public void login(UserRequestDto requestDto) {
+        String username = requestDto.getUsername();
+        String password = passwordEncoder.encode(requestDto.getPassword());
 
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new NullPointerException("username 이 일치하지 않습니다."));
+
+
+    }
+
+    /////////////////////////////////////////////////////////////////
+    public UserDetails getUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new UsernameNotFoundException("존재하지 않는 username 입니다.")
+        );
+        return new UserDetailsImpl(user);
+    }
     /////////////////////////////////////////////////////////////////
 }
