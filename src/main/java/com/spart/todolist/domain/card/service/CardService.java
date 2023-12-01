@@ -10,14 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CardService {
 
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
 
+    @Transactional
     public CardResponseDto createCard(CardRequestDto requestDto, User user) {
         Card card = Card.builder()
             .title(requestDto.getTitle())
@@ -56,4 +59,8 @@ public class CardService {
         }
         return cardResponseDtoList;
     }
+
+
+
+
 }
