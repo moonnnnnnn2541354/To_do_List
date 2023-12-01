@@ -6,6 +6,8 @@ import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.card.repository.CardRepository;
 import com.spart.todolist.domain.user.entity.User;
 import com.spart.todolist.domain.user.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,4 +29,13 @@ public class CardService {
         return responseDto;
     }
 
+    public List<CardResponseDto> getCardList() {
+        List<Card> cardList = cardRepository.findAll();
+        List<CardResponseDto> cardResponseDtoList = new ArrayList<>();
+        for (Card card : cardList) {
+            cardResponseDtoList.add(new CardResponseDto(card));
+        }
+        return cardResponseDtoList;
+
+    }
 }
