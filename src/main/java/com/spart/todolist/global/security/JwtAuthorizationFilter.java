@@ -41,6 +41,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userService.getUserDetails(username);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,null);
                 context.setAuthentication(authentication);
+                SecurityContextHolder.setContext(context);
             } else {
                 CommonResponseDto commonResponseDto = new CommonResponseDto("토큰이 유효하지 않습니다.",
                     HttpStatus.BAD_REQUEST.value());
