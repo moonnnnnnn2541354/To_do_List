@@ -1,0 +1,30 @@
+package com.spart.todolist.domain.comment.controller;
+
+import com.spart.todolist.domain.comment.dto.CommetRequestDto;
+import com.spart.todolist.domain.comment.dto.CreateCommentResuponseDto;
+import com.spart.todolist.domain.comment.service.CommentSerivce;
+import com.spart.todolist.global.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/{cardId}/comments")
+@RequiredArgsConstructor
+public class CommentController {
+
+    private final CommentSerivce commentSerivce;
+
+    @PostMapping
+    public ResponseEntity<CreateCommentResuponseDto> createComment(@PathVariable Long cardId, @AuthenticationPrincipal
+        UserDetailsImpl userDetails, @RequestBody CommetRequestDto requestDto) {
+        CreateCommentResuponseDto resuponseDto = commentSerivce.createComment(cardId,userDetails.getUser(),requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resuponseDto);
+    }
+}
