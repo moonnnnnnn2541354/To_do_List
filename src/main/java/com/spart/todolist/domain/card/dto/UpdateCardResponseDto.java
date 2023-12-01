@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CardResponseDto {
+public class UpdateCardResponseDto {
 
     private String title;
     private String content;
     private String username;
     private LocalDateTime date;
 
-    public CardResponseDto(Card card) {
+    public UpdateCardResponseDto(Card card) {
         this.title = card.getTitle();
         this.content = card.getContent();
         this.username = card.getUser().getUsername();

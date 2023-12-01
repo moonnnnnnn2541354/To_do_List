@@ -2,6 +2,7 @@ package com.spart.todolist.domain.card.entity;
 
 import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.user.entity.User;
+import com.spart.todolist.domain.utils.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,15 +12,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
 @Table(name = "cards")
-public class Card {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Card extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

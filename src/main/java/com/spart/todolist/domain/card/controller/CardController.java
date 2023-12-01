@@ -2,6 +2,8 @@ package com.spart.todolist.domain.card.controller;
 
 import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CardResponseDto;
+import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
+import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;
 import com.spart.todolist.domain.card.service.CardService;
 import com.spart.todolist.global.security.UserDetailsImpl;
 import java.util.List;
@@ -26,9 +28,9 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping
-    public ResponseEntity<CardResponseDto> createCard(@RequestBody CardRequestDto requestDto,
+    public ResponseEntity<CreateCardResponseDto> createCard(@RequestBody CardRequestDto requestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        CardResponseDto responseDto = cardService.createCard(requestDto, userDetailsImpl.getUser());
+        CreateCardResponseDto responseDto = cardService.createCard(requestDto, userDetailsImpl.getUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
@@ -51,11 +53,11 @@ public class CardController {
     }
 
     @PutMapping("/{cardId}")
-    public ResponseEntity<CardResponseDto> updateCard(@PathVariable Long cardId,
+    public ResponseEntity<UpdateCardResponseDto> updateCard(@PathVariable Long cardId,
                                                       @RequestBody CardRequestDto requestDto,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        CardResponseDto cardResponseDto = cardService.updateCard(cardId,requestDto,userDetails.getUser());
-        return ResponseEntity.ok().body(cardResponseDto);
+        UpdateCardResponseDto updateCardResponseDto = cardService.updateCard(cardId,requestDto,userDetails.getUser());
+        return ResponseEntity.ok().body(updateCardResponseDto);
     }
 
     @DeleteMapping("/{cardId}")

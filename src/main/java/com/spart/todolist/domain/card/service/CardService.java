@@ -2,6 +2,8 @@ package com.spart.todolist.domain.card.service;
 
 import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CardResponseDto;
+import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
+import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;
 import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.card.repository.CardRepository;
 import com.spart.todolist.domain.user.entity.User;
@@ -21,14 +23,14 @@ public class CardService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public CardResponseDto createCard(CardRequestDto requestDto, User user) {
+    public CreateCardResponseDto createCard(CardRequestDto requestDto, User user) {
         Card card = Card.builder()
             .title(requestDto.getTitle())
             .content(requestDto.getContent())
             .user(user)
             .build();
         cardRepository.save(card);
-        return new CardResponseDto(card);
+        return new CreateCardResponseDto(card);
     }
 
     public List<CardResponseDto> getCardList() {
@@ -60,11 +62,11 @@ public class CardService {
     }
 
     @Transactional
-    public CardResponseDto updateCard(Long cardId,CardRequestDto requestDto, User user) {
+    public UpdateCardResponseDto updateCard(Long cardId,CardRequestDto requestDto, User user) {
         Card card = findCardId(cardId);
         findUsername(card,user.getUsername());
         card.update(requestDto);
-        return new CardResponseDto(card);
+        return new UpdateCardResponseDto(card);
     }
 
     @Transactional
