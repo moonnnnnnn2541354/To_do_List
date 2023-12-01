@@ -67,6 +67,13 @@ public class CardService {
         return new CardResponseDto(card);
     }
 
+    @Transactional
+    public void deleteCard(Long cardId, User user) {
+        Card card = findCardId(cardId);
+        findUsername(card,user.getUsername());
+        cardRepository.delete(card);
+    }
+
     ///////////////////////////////////////////////////////////////////
     private Card findCardId(Long cardId) {
         return cardRepository.findById(cardId).orElseThrow(
@@ -78,5 +85,6 @@ public class CardService {
             throw new IllegalArgumentException("해당 유저정보가 일치 하지않습니다.");
         }
     }
+
     ///////////////////////////////////////////////////////////////////
 }

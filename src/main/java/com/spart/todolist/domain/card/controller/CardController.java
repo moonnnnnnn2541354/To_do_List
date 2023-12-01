@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +39,8 @@ public class CardController {
     }
 
     @GetMapping("/mine")
-    public ResponseEntity<List<CardResponseDto>> getMyCardList(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        List<CardResponseDto> cardResponseDtoList = cardService.getMyCardList(userDetailsImpl.getUser());
+    public ResponseEntity<List<CardResponseDto>> getMyCardList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<CardResponseDto> cardResponseDtoList = cardService.getMyCardList(userDetails.getUser());
         return ResponseEntity.ok().body(cardResponseDtoList);
     }
 
@@ -52,8 +53,14 @@ public class CardController {
     @PutMapping("/{cardId}")
     public ResponseEntity<CardResponseDto> updateCard(@PathVariable Long cardId,
                                                       @RequestBody CardRequestDto requestDto,
-                                                      @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        CardResponseDto cardResponseDto = cardService.updateCard(cardId,requestDto,userDetailsImpl.getUser());
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        CardResponseDto cardResponseDto = cardService.updateCard(cardId,requestDto,userDetails.getUser());
         return ResponseEntity.ok().body(cardResponseDto);
+    }
+
+    @DeleteMapping("/{cardId}")
+    public void deleteCard(@PathVariable Long cardId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        cardService.deleteCard(cardId,userDetails.getUser());
     }
 }
