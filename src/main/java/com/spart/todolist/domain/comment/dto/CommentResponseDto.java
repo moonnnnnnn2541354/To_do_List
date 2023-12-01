@@ -1,4 +1,4 @@
-package com.spart.todolist.domain.card.dto;
+package com.spart.todolist.domain.comment.dto;
 
 import com.spart.todolist.domain.comment.entity.Comment;
 import com.spart.todolist.domain.user.entity.User;

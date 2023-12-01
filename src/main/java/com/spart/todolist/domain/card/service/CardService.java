@@ -2,7 +2,7 @@ package com.spart.todolist.domain.card.service;
 
 import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CardListResponseDto;
-import com.spart.todolist.domain.card.dto.CommentResponseDto;
+import com.spart.todolist.domain.comment.dto.CommentResponseDto;
 import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
 import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
 import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;

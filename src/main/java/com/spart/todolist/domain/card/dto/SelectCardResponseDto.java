@@ -1,6 +1,7 @@
 package com.spart.todolist.domain.card.dto;
 
 import com.spart.todolist.domain.card.entity.Card;
+import com.spart.todolist.domain.comment.dto.CommentResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
