@@ -60,7 +60,24 @@ public class CardService {
         return cardResponseDtoList;
     }
 
+    @Transactional
+    public CardResponseDto updateCard(Long cardId,CardRequestDto requestDto, User user) {
+        Card card = findCardId(cardId);
+        findUsername(card,user.getUsername());
+        card.update(requestDto);
+        return new CardResponseDto(card);
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    private Card findCardId(Long cardId) {
+        return cardRepository.findById(cardId).orElseThrow(
+            () -> new NullPointerException("해당 게시물이 존재하지 않습니다."));
+    }
 
-
+    private void findUsername(Card card, String username) {
+        if (!card.getUser().getUsername().equals(username)) {
+            throw new IllegalArgumentException("해당 유저정보가 일치 하지않습니다.");
+        }
+    }
+    ///////////////////////////////////////////////////////////////////
 }

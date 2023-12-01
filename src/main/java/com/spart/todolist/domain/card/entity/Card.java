@@ -1,5 +1,6 @@
 package com.spart.todolist.domain.card.entity;
 
+import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,4 +42,8 @@ public class Card {
         this.user = user;
     }
 
+    public void update(CardRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+    }
 }

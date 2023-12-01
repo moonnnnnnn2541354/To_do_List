@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,5 +47,13 @@ public class CardController {
     public ResponseEntity<List<CardResponseDto>> getUsersCardList(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
         List<CardResponseDto> cardResponseDtoList = cardService.getUsersCardList(userDetailsImpl.getUser());
         return ResponseEntity.ok().body(cardResponseDtoList);
+    }
+
+    @PutMapping("/{cardId}")
+    public ResponseEntity<CardResponseDto> updateCard(@PathVariable Long cardId,
+                                                      @RequestBody CardRequestDto requestDto,
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        CardResponseDto cardResponseDto = cardService.updateCard(cardId,requestDto,userDetailsImpl.getUser());
+        return ResponseEntity.ok().body(cardResponseDto);
     }
 }
