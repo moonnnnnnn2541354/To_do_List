@@ -28,8 +28,7 @@ public class CardService {
             .user(user)
             .build();
         cardRepository.save(card);
-        CardResponseDto responseDto = new CardResponseDto(card);
-        return responseDto;
+        return new CardResponseDto(card);
     }
 
     public List<CardResponseDto> getCardList() {
