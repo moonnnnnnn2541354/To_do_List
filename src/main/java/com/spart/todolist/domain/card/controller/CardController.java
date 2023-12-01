@@ -1,7 +1,8 @@
 package com.spart.todolist.domain.card.controller;
 
 import com.spart.todolist.domain.card.dto.CardRequestDto;
-import com.spart.todolist.domain.card.dto.CardResponseDto;
+import com.spart.todolist.domain.card.dto.CardListResponseDto;
+import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
 import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
 import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;
 import com.spart.todolist.domain.card.service.CardService;
@@ -34,21 +35,27 @@ public class CardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
+    @GetMapping("/{cardId}")
+    public ResponseEntity<SelectCardResponseDto> getCard(@PathVariable Long cardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        SelectCardResponseDto cardResponseDto = cardService.getCard(cardId,userDetails.getUser());
+        return ResponseEntity.ok().body(cardResponseDto);
+    }
+
     @GetMapping
-    public ResponseEntity<List<CardResponseDto>> getCardList() {
-        List<CardResponseDto> cardResponseDtoList = cardService.getCardList();
+    public ResponseEntity<List<CardListResponseDto>> getCardList() {
+        List<CardListResponseDto> cardResponseDtoList = cardService.getCardList();
         return ResponseEntity.ok().body(cardResponseDtoList);
     }
 
     @GetMapping("/mine")
-    public ResponseEntity<List<CardResponseDto>> getMyCardList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<CardResponseDto> cardResponseDtoList = cardService.getMyCardList(userDetails.getUser());
+    public ResponseEntity<List<CardListResponseDto>> getMyCardList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<CardListResponseDto> cardResponseDtoList = cardService.getMyCardList(userDetails.getUser());
         return ResponseEntity.ok().body(cardResponseDtoList);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<CardResponseDto>> getUsersCardList(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        List<CardResponseDto> cardResponseDtoList = cardService.getUsersCardList(userDetailsImpl.getUser());
+    public ResponseEntity<List<CardListResponseDto>> getUsersCardList(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        List<CardListResponseDto> cardResponseDtoList = cardService.getUsersCardList(userDetailsImpl.getUser());
         return ResponseEntity.ok().body(cardResponseDtoList);
     }
 

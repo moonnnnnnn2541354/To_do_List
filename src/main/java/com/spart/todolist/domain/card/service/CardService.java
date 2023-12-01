@@ -1,11 +1,14 @@
 package com.spart.todolist.domain.card.service;
 
 import com.spart.todolist.domain.card.dto.CardRequestDto;
-import com.spart.todolist.domain.card.dto.CardResponseDto;
+import com.spart.todolist.domain.card.dto.CardListResponseDto;
+import com.spart.todolist.domain.card.dto.CommentResponseDto;
+import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
 import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
 import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;
 import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.card.repository.CardRepository;
+import com.spart.todolist.domain.comment.entity.Comment;
 import com.spart.todolist.domain.user.entity.User;
 import com.spart.todolist.domain.user.repository.UserRepository;
 import java.util.ArrayList;
@@ -33,38 +36,46 @@ public class CardService {
         return new CreateCardResponseDto(card);
     }
 
-    public List<CardResponseDto> getCardList() {
+    public SelectCardResponseDto getCard(Long cardId, User user) {
+        Card card = findCardId(cardId);
+        findUsername(card, user.getUsername());
+        List<CommentResponseDto> commentResponseDtosList = commentList(card);
+
+        return new SelectCardResponseDto(card,commentResponseDtosList);
+    }
+
+    public List<CardListResponseDto> getCardList() {
         List<Card> cardList = cardRepository.findAll();
-        List<CardResponseDto> cardResponseDtoList = new ArrayList<>();
+        List<CardListResponseDto> cardResponseDtoList = new ArrayList<>();
         for (Card card : cardList) {
-            cardResponseDtoList.add(new CardResponseDto(card));
+            cardResponseDtoList.add(new CardListResponseDto(card));
         }
         return cardResponseDtoList;
 
     }
 
-    public List<CardResponseDto> getMyCardList(User user) {
+    public List<CardListResponseDto> getMyCardList(User user) {
         List<Card> cardList = cardRepository.findAllByUser(user);
-        List<CardResponseDto> cardResponseDtoList = new ArrayList<>();
+        List<CardListResponseDto> cardResponseDtoList = new ArrayList<>();
         for (Card card : cardList) {
-            cardResponseDtoList.add(new CardResponseDto(card));
+            cardResponseDtoList.add(new CardListResponseDto(card));
         }
         return cardResponseDtoList;
     }
 
-    public List<CardResponseDto> getUsersCardList(User user) {
+    public List<CardListResponseDto> getUsersCardList(User user) {
         List<Card> cardList = cardRepository.findAllByUserNot(user);
-        List<CardResponseDto> cardResponseDtoList = new ArrayList<>();
+        List<CardListResponseDto> cardResponseDtoList = new ArrayList<>();
         for (Card card : cardList) {
-            cardResponseDtoList.add(new CardResponseDto(card));
+            cardResponseDtoList.add(new CardListResponseDto(card));
         }
         return cardResponseDtoList;
     }
 
     @Transactional
-    public UpdateCardResponseDto updateCard(Long cardId,CardRequestDto requestDto, User user) {
+    public UpdateCardResponseDto updateCard(Long cardId, CardRequestDto requestDto, User user) {
         Card card = findCardId(cardId);
-        findUsername(card,user.getUsername());
+        findUsername(card, user.getUsername());
         card.update(requestDto);
         return new UpdateCardResponseDto(card);
     }
@@ -72,7 +83,7 @@ public class CardService {
     @Transactional
     public void deleteCard(Long cardId, User user) {
         Card card = findCardId(cardId);
-        findUsername(card,user.getUsername());
+        findUsername(card, user.getUsername());
         cardRepository.delete(card);
     }
 
@@ -86,6 +97,16 @@ public class CardService {
         if (!card.getUser().getUsername().equals(username)) {
             throw new IllegalArgumentException("해당 유저정보가 일치 하지않습니다.");
         }
+    }
+
+    private List<CommentResponseDto> commentList(Card card) {
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        List<Comment> commentList = card.getCommentList();
+        commentList.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+        for (Comment comment : commentList) {
+            commentResponseDtoList.add(new CommentResponseDto(comment,comment.getUser().getUsername()));
+        }
+        return commentResponseDtoList;
     }
 
     ///////////////////////////////////////////////////////////////////
