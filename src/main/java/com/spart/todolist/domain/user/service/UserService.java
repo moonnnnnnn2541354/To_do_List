@@ -5,19 +5,25 @@ import com.spart.todolist.domain.user.entity.User;
 import com.spart.todolist.domain.user.repository.UserRepository;
 import com.spart.todolist.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Slf4j
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+    @Transactional
     public void signup(UserRequestDto requestDto) {
+        log.warn("서비스");
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
@@ -35,20 +41,15 @@ public class UserService {
 
     public void login(UserRequestDto requestDto) {
         String username = requestDto.getUsername();
-        String password = passwordEncoder.encode(requestDto.getPassword());
+        String password = requestDto.getPassword();
 
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new NullPointerException("username 이 일치하지 않습니다."));
 
+        if (!passwordEncoder.matches(password,user.getPassword())) {
+            throw new IllegalArgumentException("password 가 일치하지 않습니다.");
+        }
+
 
     }
-
-    /////////////////////////////////////////////////////////////////
-    public UserDetails getUserDetails(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new UsernameNotFoundException("존재하지 않는 user 입니다.")
-        );
-        return new UserDetailsImpl(user);
-    }
-    /////////////////////////////////////////////////////////////////
 }
