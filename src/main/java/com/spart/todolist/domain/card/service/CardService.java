@@ -38,4 +38,22 @@ public class CardService {
         return cardResponseDtoList;
 
     }
+
+    public List<CardResponseDto> getMyCardList(User user) {
+        List<Card> cardList = cardRepository.findAllByUser(user);
+        List<CardResponseDto> cardResponseDtoList = new ArrayList<>();
+        for (Card card : cardList) {
+            cardResponseDtoList.add(new CardResponseDto(card));
+        }
+        return cardResponseDtoList;
+    }
+
+    public List<CardResponseDto> getUsersCardList(User user) {
+        List<Card> cardList = cardRepository.findAllByUserNot(user);
+        List<CardResponseDto> cardResponseDtoList = new ArrayList<>();
+        for (Card card : cardList) {
+            cardResponseDtoList.add(new CardResponseDto(card));
+        }
+        return cardResponseDtoList;
+    }
 }

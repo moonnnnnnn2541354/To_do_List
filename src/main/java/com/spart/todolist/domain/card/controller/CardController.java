@@ -34,4 +34,16 @@ public class CardController {
         List<CardResponseDto> cardResponseDtoList = cardService.getCardList();
         return ResponseEntity.ok().body(cardResponseDtoList);
     }
+
+    @GetMapping("/mine")
+    public ResponseEntity<List<CardResponseDto>> getMyCardList(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        List<CardResponseDto> cardResponseDtoList = cardService.getMyCardList(userDetailsImpl.getUser());
+        return ResponseEntity.ok().body(cardResponseDtoList);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<CardResponseDto>> getUsersCardList(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        List<CardResponseDto> cardResponseDtoList = cardService.getUsersCardList(userDetailsImpl.getUser());
+        return ResponseEntity.ok().body(cardResponseDtoList);
+    }
 }
