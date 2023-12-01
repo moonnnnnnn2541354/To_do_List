@@ -1,9 +1,9 @@
 package com.spart.todolist.domain.card.controller;
 
-import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CardListResponseDto;
-import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
+import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
+import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
 import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;
 import com.spart.todolist.domain.card.service.CardService;
 import com.spart.todolist.global.security.UserDetailsImpl;
@@ -31,13 +31,15 @@ public class CardController {
     @PostMapping
     public ResponseEntity<CreateCardResponseDto> createCard(@RequestBody CardRequestDto requestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        CreateCardResponseDto responseDto = cardService.createCard(requestDto, userDetailsImpl.getUser());
+        CreateCardResponseDto responseDto = cardService.createCard(requestDto,
+            userDetailsImpl.getUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping("/{cardId}")
-    public ResponseEntity<SelectCardResponseDto> getCard(@PathVariable Long cardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        SelectCardResponseDto cardResponseDto = cardService.getCard(cardId,userDetails.getUser());
+    public ResponseEntity<SelectCardResponseDto> getCard(@PathVariable Long cardId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        SelectCardResponseDto cardResponseDto = cardService.getCard(cardId, userDetails.getUser());
         return ResponseEntity.ok().body(cardResponseDto);
     }
 
@@ -48,35 +50,41 @@ public class CardController {
     }
 
     @GetMapping("/mine")
-    public ResponseEntity<List<CardListResponseDto>> getMyCardList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<CardListResponseDto> cardResponseDtoList = cardService.getMyCardList(userDetails.getUser());
+    public ResponseEntity<List<CardListResponseDto>> getMyCardList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<CardListResponseDto> cardResponseDtoList = cardService.getMyCardList(
+            userDetails.getUser());
         return ResponseEntity.ok().body(cardResponseDtoList);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<CardListResponseDto>> getUsersCardList(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        List<CardListResponseDto> cardResponseDtoList = cardService.getUsersCardList(userDetailsImpl.getUser());
+    public ResponseEntity<List<CardListResponseDto>> getUsersCardList(
+        @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        List<CardListResponseDto> cardResponseDtoList = cardService.getUsersCardList(
+            userDetailsImpl.getUser());
         return ResponseEntity.ok().body(cardResponseDtoList);
     }
 
     @PutMapping("/{cardId}")
     public ResponseEntity<UpdateCardResponseDto> updateCard(@PathVariable Long cardId,
-                                                      @RequestBody CardRequestDto requestDto,
-                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        UpdateCardResponseDto updateCardResponseDto = cardService.updateCard(cardId,requestDto,userDetails.getUser());
+        @RequestBody CardRequestDto requestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UpdateCardResponseDto updateCardResponseDto = cardService.updateCard(cardId, requestDto,
+            userDetails.getUser());
         return ResponseEntity.ok().body(updateCardResponseDto);
     }
 
     @PutMapping("/{cardId}/end")
     public ResponseEntity<UpdateCardResponseDto> todoCompleted(@PathVariable Long cardId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        UpdateCardResponseDto updateCardResponseDto = cardService.todoCompleted(cardId,userDetails.getUser());
+        UpdateCardResponseDto updateCardResponseDto = cardService.todoCompleted(cardId,
+            userDetails.getUser());
         return ResponseEntity.ok().body(updateCardResponseDto);
     }
 
     @DeleteMapping("/{cardId}")
     public void deleteCard(@PathVariable Long cardId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        cardService.deleteCard(cardId,userDetails.getUser());
+        cardService.deleteCard(cardId, userDetails.getUser());
     }
 }
