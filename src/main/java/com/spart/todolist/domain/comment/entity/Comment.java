@@ -2,7 +2,6 @@ package com.spart.todolist.domain.comment.entity;
 
 import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.comment.dto.CommentRequestDto;
-import com.spart.todolist.domain.comment.dto.CommentResponseDto;
 import com.spart.todolist.domain.user.entity.User;
 import com.spart.todolist.domain.utils.BaseTime;
 import jakarta.persistence.*;

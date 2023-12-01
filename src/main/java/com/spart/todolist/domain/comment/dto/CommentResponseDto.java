@@ -1,7 +1,6 @@
 package com.spart.todolist.domain.comment.dto;
 
 import com.spart.todolist.domain.comment.entity.Comment;
-import com.spart.todolist.domain.user.entity.User;
 import java.time.LocalDateTime;
 import lombok.Getter;
 

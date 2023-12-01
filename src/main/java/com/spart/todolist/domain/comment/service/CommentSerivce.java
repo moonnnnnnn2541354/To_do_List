@@ -3,7 +3,6 @@ package com.spart.todolist.domain.comment.service;
 import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.card.repository.CardRepository;
 import com.spart.todolist.domain.comment.dto.CommentRequestDto;
-import com.spart.todolist.domain.comment.dto.CommentResponseDto;
 import com.spart.todolist.domain.comment.dto.CreateCommentResponseDto;
 import com.spart.todolist.domain.comment.dto.UpdateCommentResponseDto;
 import com.spart.todolist.domain.comment.entity.Comment;

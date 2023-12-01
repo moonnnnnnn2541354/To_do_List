@@ -2,17 +2,16 @@ package com.spart.todolist.domain.card.service;
 
 import static com.spart.todolist.domain.card.constant.PostConstant.DEFAULT_COMPLETE;
 
-import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CardListResponseDto;
-import com.spart.todolist.domain.comment.dto.CommentResponseDto;
-import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
+import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
+import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
 import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;
 import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.card.repository.CardRepository;
+import com.spart.todolist.domain.comment.dto.CommentResponseDto;
 import com.spart.todolist.domain.comment.entity.Comment;
 import com.spart.todolist.domain.user.entity.User;
-import com.spart.todolist.domain.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CardService {
 
-    private final UserRepository userRepository;
     private final CardRepository cardRepository;
 
     @Transactional
