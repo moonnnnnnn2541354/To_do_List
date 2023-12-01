@@ -2,11 +2,13 @@ package com.spart.todolist.global.security;
 
 import com.spart.todolist.domain.user.entity.User;
 import java.util.Collection;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @RequiredArgsConstructor
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
