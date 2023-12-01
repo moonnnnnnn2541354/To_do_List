@@ -44,6 +44,14 @@ public class CommentSerivce {
         return new UpdateCommentResponseDto(comment,user.getUsername());
     }
 
+    @Transactional
+    public void deleteComment(Long cardId, Long commentId, User user) {
+        Comment comment = findComment(commentId);
+        Card card = findCard(cardId);
+        checkUser(card,user.getUsername());
+        commentRepository.delete(comment);
+    }
+
     ///////////////////////////////////////////////////////////////////
     private Comment findComment(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(
@@ -59,6 +67,7 @@ public class CommentSerivce {
             throw new IllegalArgumentException("회원정보가 일치하지 않습니다.");
         }
     }
+
 
     ///////////////////////////////////////////////////////////////////
 }
