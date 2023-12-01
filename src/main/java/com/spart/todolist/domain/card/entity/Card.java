@@ -37,22 +37,29 @@ public class Card extends BaseTime {
     @Column(nullable = false)
     private String content;
 
+    private Boolean complete;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
     List<Comment> commentList;
 
     @Builder
-    public Card(String title, String content, User user) {
+    public Card(String title, Boolean complete, String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.complete = complete;
     }
 
     public void update(CardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+    }
+
+    public void complete() {
+        this.complete = true;
     }
 }

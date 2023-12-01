@@ -1,5 +1,7 @@
 package com.spart.todolist.domain.card.service;
 
+import static com.spart.todolist.domain.card.constant.PostConstant.DEFAULT_COMPLETE;
+
 import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CardListResponseDto;
 import com.spart.todolist.domain.comment.dto.CommentResponseDto;
@@ -31,6 +33,7 @@ public class CardService {
             .title(requestDto.getTitle())
             .content(requestDto.getContent())
             .user(user)
+            .complete(DEFAULT_COMPLETE)
             .build();
         cardRepository.save(card);
         return new CreateCardResponseDto(card);
@@ -81,6 +84,14 @@ public class CardService {
     }
 
     @Transactional
+    public UpdateCardResponseDto todoCompleted(Long cardId, User user) {
+        Card card = findCardId(cardId);
+        findUsername(card, user.getUsername());
+        card.complete();
+        return new UpdateCardResponseDto(card);
+    }
+
+    @Transactional
     public void deleteCard(Long cardId, User user) {
         Card card = findCardId(cardId);
         findUsername(card, user.getUsername());
@@ -108,6 +119,7 @@ public class CardService {
         }
         return commentResponseDtoList;
     }
+
 
     ///////////////////////////////////////////////////////////////////
 }

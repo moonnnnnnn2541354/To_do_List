@@ -14,11 +14,13 @@ public class CardListResponseDto {
     private String content;
     private String username;
     private LocalDateTime date;
+    private Boolean complete;
 
     public CardListResponseDto(Card card) {
         this.title = card.getTitle();
         this.content = card.getContent();
         this.username = card.getUser().getUsername();
         this.date = card.getModifiedAt();
+        this.complete = card.getComplete();
     }
 }

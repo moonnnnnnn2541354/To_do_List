@@ -67,6 +67,13 @@ public class CardController {
         return ResponseEntity.ok().body(updateCardResponseDto);
     }
 
+    @PutMapping("/{cardId}/end")
+    public ResponseEntity<UpdateCardResponseDto> todoCompleted(@PathVariable Long cardId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UpdateCardResponseDto updateCardResponseDto = cardService.todoCompleted(cardId,userDetails.getUser());
+        return ResponseEntity.ok().body(updateCardResponseDto);
+    }
+
     @DeleteMapping("/{cardId}")
     public void deleteCard(@PathVariable Long cardId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {

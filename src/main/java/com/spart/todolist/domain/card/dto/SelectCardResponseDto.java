@@ -13,6 +13,7 @@ public class SelectCardResponseDto {
     private String content;
     private String username;
     private LocalDateTime date;
+    private Boolean complete;
     private List<CommentResponseDto> commentList;
 
     public SelectCardResponseDto(Card card,List<CommentResponseDto> responseListDtoList) {
@@ -20,6 +21,7 @@ public class SelectCardResponseDto {
         this.content = card.getContent();
         this.username = card.getUser().getUsername();
         this.date = card.getModifiedAt();
+        this.complete = card.getComplete();
         this.commentList = responseListDtoList;
     }
 

@@ -14,11 +14,13 @@ public class CreateCardResponseDto {
     private String content;
     private String username;
     private LocalDateTime date;
+    private Boolean complete;
 
     public CreateCardResponseDto(Card card) {
         this.title = card.getTitle();
         this.content = card.getContent();
         this.username = card.getUser().getUsername();
         this.date = card.getCreatedAt();
+        this.complete = false;
     }
 }
