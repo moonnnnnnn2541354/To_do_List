@@ -1,6 +1,8 @@
 package com.spart.todolist.domain.comment.entity;
 
 import com.spart.todolist.domain.card.entity.Card;
+import com.spart.todolist.domain.comment.dto.CommentRequestDto;
+import com.spart.todolist.domain.comment.dto.CommentResponseDto;
 import com.spart.todolist.domain.user.entity.User;
 import com.spart.todolist.domain.utils.BaseTime;
 import jakarta.persistence.*;
@@ -36,5 +38,12 @@ public class Comment extends BaseTime {
         this.card = card;
         this.user = user;
     }
+
+    public void update(CommentRequestDto requestDto, Card card, User user){
+        this.content = requestDto.getContent();
+        this.card = card;
+        this.user = user;
+    }
+
 
 }

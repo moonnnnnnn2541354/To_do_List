@@ -1,7 +1,8 @@
 package com.spart.todolist.domain.comment.controller;
 
-import com.spart.todolist.domain.comment.dto.CommetRequestDto;
+import com.spart.todolist.domain.comment.dto.CommentRequestDto;
 import com.spart.todolist.domain.comment.dto.CreateCommentResponseDto;
+import com.spart.todolist.domain.comment.dto.UpdateCommentResponseDto;
 import com.spart.todolist.domain.comment.service.CommentSerivce;
 import com.spart.todolist.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,21 @@ public class CommentController {
     private final CommentSerivce commentSerivce;
 
     @PostMapping
-    public ResponseEntity<CreateCommentResponseDto> createComment(@PathVariable Long cardId, @AuthenticationPrincipal
-        UserDetailsImpl userDetails, @RequestBody CommetRequestDto requestDto) {
-        CreateCommentResponseDto resuponseDto = commentSerivce.createComment(cardId,userDetails.getUser(),requestDto);
+    public ResponseEntity<CreateCommentResponseDto> createComment(@PathVariable Long cardId,
+        @AuthenticationPrincipal
+        UserDetailsImpl userDetails, @RequestBody CommentRequestDto requestDto) {
+        CreateCommentResponseDto resuponseDto = commentSerivce.createComment(cardId,
+            userDetails.getUser(), requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(resuponseDto);
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<UpdateCommentResponseDto>
+    public ResponseEntity<UpdateCommentResponseDto> updateComment(@PathVariable Long cardId,
+        @PathVariable Long commentId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody CommentRequestDto requestDto) {
+        UpdateCommentResponseDto responseDto = commentSerivce.updateComment(cardId, commentId,
+            userDetails.getUser(), requestDto);
+        return ResponseEntity.ok().body(responseDto);
+    }
 }
