@@ -10,7 +10,11 @@ import org.springframework.stereotype.Repository;
 public interface CardRepository extends JpaRepository<Card,Long> {
 
 
-    List<Card> findAllByUser(User user);
+    List<Card> findAllByUserOrderByCreatedAtDesc(User user);
 
-    List<Card> findAllByUserNot(User user);
+    List<Card> findAllByUserNotOrderByCreatedAtDesc(User user);
+
+    List<Card> findAllByOrderByCreatedAtDesc();
+
+
 }

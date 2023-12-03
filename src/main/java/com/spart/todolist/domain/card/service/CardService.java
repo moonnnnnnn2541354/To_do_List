@@ -46,7 +46,7 @@ public class CardService {
     }
 
     public List<CardListResponseDto> getCardList() {
-        List<Card> cardList = cardRepository.findAll();
+        List<Card> cardList = cardRepository.findAllByOrderByCreatedAtDesc();
         List<CardListResponseDto> cardResponseDtoList = new ArrayList<>();
         for (Card card : cardList) {
             cardResponseDtoList.add(new CardListResponseDto(card));
@@ -56,7 +56,7 @@ public class CardService {
     }
 
     public List<CardListResponseDto> getMyCardList(User user) {
-        List<Card> cardList = cardRepository.findAllByUser(user);
+        List<Card> cardList = cardRepository.findAllByUserOrderByCreatedAtDesc(user);
         List<CardListResponseDto> cardResponseDtoList = new ArrayList<>();
         for (Card card : cardList) {
             cardResponseDtoList.add(new CardListResponseDto(card));
@@ -65,7 +65,7 @@ public class CardService {
     }
 
     public List<CardListResponseDto> getUsersCardList(User user) {
-        List<Card> cardList = cardRepository.findAllByUserNot(user);
+        List<Card> cardList = cardRepository.findAllByUserNotOrderByCreatedAtDesc(user);
         List<CardListResponseDto> cardResponseDtoList = new ArrayList<>();
         for (Card card : cardList) {
             cardResponseDtoList.add(new CardListResponseDto(card));
