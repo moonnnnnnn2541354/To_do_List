@@ -3,11 +3,13 @@ package com.spart.todolist.domain.card.dto;
 import com.spart.todolist.domain.card.entity.Card;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UpdateCardResponseDto {
 
     private String title;
