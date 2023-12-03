@@ -66,16 +66,20 @@ public class CardController {
     }
 
     @PutMapping("/{cardId}")
-    public ResponseEntity<UpdateCardResponseDto> updateCard(@PathVariable Long cardId,
+    public ResponseEntity<UpdateCardResponseDto> updateCard(
+        @PathVariable(name = "cardId") Long cardId,
         @RequestBody CardRequestDto requestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         UpdateCardResponseDto updateCardResponseDto = cardService.updateCard(cardId, requestDto,
             userDetails.getUser());
+
         return ResponseEntity.ok().body(updateCardResponseDto);
     }
 
     @PutMapping("/{cardId}/end")
-    public ResponseEntity<UpdateCardResponseDto> todoCompleted(@PathVariable Long cardId,
+    public ResponseEntity<UpdateCardResponseDto> todoCompleted(
+        @PathVariable(name = "cardId") Long cardId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UpdateCardResponseDto updateCardResponseDto = cardService.todoCompleted(cardId,
             userDetails.getUser());
