@@ -20,7 +20,6 @@ public class UserService {
 
     @Transactional
     public void signup(UserRequestDto requestDto) {
-        log.warn("서비스");
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
