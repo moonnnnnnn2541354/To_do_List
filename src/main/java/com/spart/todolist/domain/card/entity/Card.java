@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Card extends BaseTime {
+public class Card extends BaseTime implements Serializable {
 
     @Id
     @Column(name = "card_id")
@@ -52,6 +53,10 @@ public class Card extends BaseTime {
         this.content = content;
         this.user = user;
         this.complete = complete;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void update(CardRequestDto requestDto) {
