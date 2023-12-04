@@ -37,7 +37,7 @@ public class CardController {
     }
 
     @GetMapping("/{cardId}")
-    public ResponseEntity<SelectCardResponseDto> getCard(@PathVariable Long cardId,
+    public ResponseEntity<SelectCardResponseDto> getCard(@PathVariable(name = "cardId") Long cardId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         SelectCardResponseDto cardResponseDto = cardService.getCard(cardId, userDetails.getUser());
         return ResponseEntity.ok().body(cardResponseDto);

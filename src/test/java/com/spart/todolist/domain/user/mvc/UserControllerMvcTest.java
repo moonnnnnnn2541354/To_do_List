@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spart.todolist.domain.mvcfilter.MockSpringSecurityFilter;
 import com.spart.todolist.domain.user.controller.UserController;
 import com.spart.todolist.domain.user.dto.UserRequestDto;
 import com.spart.todolist.domain.user.entity.User;

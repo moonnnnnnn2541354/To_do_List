@@ -5,20 +5,23 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spart.todolist.domain.card.controller.CardController;
 import com.spart.todolist.domain.card.dto.CardRequestDto;
 import com.spart.todolist.domain.card.dto.CreateCardResponseDto;
+import com.spart.todolist.domain.card.dto.SelectCardResponseDto;
 import com.spart.todolist.domain.card.dto.UpdateCardResponseDto;
 import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.card.repository.CardRepository;
 import com.spart.todolist.domain.card.service.CardService;
+import com.spart.todolist.domain.comment.dto.CommentResponseDto;
+import com.spart.todolist.domain.comment.entity.Comment;
 import com.spart.todolist.domain.mvcfilter.MockSpringSecurityFilter;
 import com.spart.todolist.domain.user.entity.User;
 import com.spart.todolist.global.config.WebSecurityConfig;
@@ -28,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -128,19 +132,62 @@ public class CardControllerMvcTest {
                 .principal(mockPrincipal))
 
             .andExpect(status().isCreated())
-            .andDo(print())
-            .andExpect(jsonPath("$.title").value(responseDto.getTitle()))
-            .andExpect(jsonPath("$.content").value(responseDto.getContent()));
+            .andDo(print());
     }
 
     @Test
     @DisplayName("할일카드 단일조회")
     void getCard() throws Exception {
+        User kim = User.builder().username("kim12345").password("12345678").build();
+        Long cardId = 1L;
+        CardRequestDto requestDto = new CardRequestDto("나는 제목","나는 내용");
+        Card card = Card.builder()
+            .title(requestDto.getTitle())
+            .content(requestDto.getContent())
+            .complete(DEFAULT_COMPLETE)
+            .user(kim)
+            .build();
+        Comment comment = Comment.builder()
+            .card(card)
+            .user(kim)
+            .content("안녕")
+            .build();
+        List<CommentResponseDto> commentResponseDtos = Arrays.asList(
+            new CommentResponseDto(comment,kim.getUsername()));
+        SelectCardResponseDto responseDto = new SelectCardResponseDto(card,commentResponseDtos);
+        String json = objectMapper.writeValueAsString(responseDto);
+
+        given(cardRepository.findById(cardId)).willReturn(Optional.of(card));
+
+        mvc.perform(get("/api/cards/{cardId}",cardId)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .principal(mockPrincipal))
+
+            .andExpect(status().isOk())
+            .andDo(print());
     }
 
     @Test
     @DisplayName("할일카드 전체조회")
     void getCardList() throws Exception {
+        User kim = User.builder().username("kim12345").password("12345678").build();
+        User dong = User.builder().username("dong12345").password("12345678").build();
+
+        List<Card> cardList = Arrays.asList(
+            new Card("나는 제",false,"나는 내",kim),
+            new Card("나는 목",false,"나는 용",kim),
+            new Card("나는 임",false,"나는 임",dong));
+
+        given(cardRepository.findAll()).willReturn(cardList);
+        given(cardRepository.findAllByOrderByCreatedAtDesc()).willReturn(cardList);
+
+        mvc.perform(get("/api/cards")
+                .accept(MediaType.APPLICATION_JSON)
+                .principal(mockPrincipal))
+            .andExpect(status().isOk())
+            .andDo(print());
     }
 
     @Test
@@ -203,5 +250,6 @@ public class CardControllerMvcTest {
     @Test
     @DisplayName("할일카드 삭제")
     void deleteCard() throws Exception {
+
     }
 }

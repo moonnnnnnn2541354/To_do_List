@@ -4,9 +4,13 @@ import com.spart.todolist.domain.card.entity.Card;
 import com.spart.todolist.domain.comment.dto.CommentResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SelectCardResponseDto {
 
     private String title;
