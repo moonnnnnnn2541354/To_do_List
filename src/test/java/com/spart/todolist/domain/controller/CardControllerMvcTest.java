@@ -91,7 +91,7 @@ public class CardControllerMvcTest {
     }
 
     @Test
-    @DisplayName("할일카드 생성")
+    @DisplayName("할일카드 생성 요청")
     void createCard() throws Exception {
         User kim = User.builder().username("kim12345").password("12345678").build();
         CardRequestDto requestDto = new CardRequestDto("나는 제목","나는 내용");
@@ -118,7 +118,7 @@ public class CardControllerMvcTest {
     }
 
     @Test
-    @DisplayName("할일카드 단일조회")
+    @DisplayName("할일카드 단일조회 요청")
     void getCard() throws Exception {
         User kim = User.builder().username("kim12345").password("12345678").build();
         Long cardId = 1L;
@@ -152,7 +152,7 @@ public class CardControllerMvcTest {
     }
 
     @Test
-    @DisplayName("할일카드 전체조회")
+    @DisplayName("할일카드 전체조회 요청")
     void getCardList() throws Exception {
         User kim = User.builder().username("kim12345").password("12345678").build();
         User dong = User.builder().username("dong12345").password("12345678").build();
@@ -173,7 +173,7 @@ public class CardControllerMvcTest {
     }
 
     @Test
-    @DisplayName("할일카드 수정")
+    @DisplayName("할일카드 수정 요청")
     void updateCard() throws Exception {
         User kim = User.builder().username("kim12345").password("12345678").build();
         Long cardId = 1L;
@@ -201,7 +201,7 @@ public class CardControllerMvcTest {
     }
 
     @Test
-    @DisplayName("할일카드 완료")
+    @DisplayName("할일카드 완료 요청")
     void todoCompleted() throws Exception {
         User kim = User.builder().username("kim12345").password("12345678").build();
         Long cardId = 1L;
@@ -230,7 +230,7 @@ public class CardControllerMvcTest {
     }
 
     @Test
-    @DisplayName("할일카드 삭제")
+    @DisplayName("할일카드 삭제 요청")
     void deleteCard() throws Exception {
 
     }
