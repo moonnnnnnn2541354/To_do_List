@@ -90,15 +90,6 @@ public class CardControllerMvcTest {
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
     }
 
-    private void mockUserSetup() {
-        // Mock 테스트 유져 생성
-        String username = "kim";
-        String password = "12345678";
-        User testUser = new User(username, password);
-        UserDetailsImpl testUserDetails = new UserDetailsImpl(testUser);
-        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
-    }
-
     @Test
     @DisplayName("할일카드 생성")
     void createCard() throws Exception {
