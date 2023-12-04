@@ -47,7 +47,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@DisplayName("UserController 테스트")
+@DisplayName("CardController 테스트")
 @MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(
     controllers = {CardController.class},
