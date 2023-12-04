@@ -68,5 +68,4 @@ public class UserRequestDtoTest implements CommonTest {
         return validator.validate(userRequestDTO);
     }
 
-
 }
