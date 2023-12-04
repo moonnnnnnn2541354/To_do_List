@@ -85,15 +85,6 @@ public class CardControllerMvcTest {
             .build();
 
         User kim = User.builder().username("kim12345").password("12345678").build();
-        User dong = User.builder().username("dong12345").password("12345678").build();
-
-        List<Card> cardList = Arrays.asList(
-            new Card("나는 제",false,"나는 내",kim),
-            new Card("나는 목",false,"나는 용",kim),
-            new Card("나는 임",false,"나는 임",dong));
-
-        given(cardRepository.findAll()).willReturn(cardList);
-        given(cardRepository.findAllByOrderByCreatedAtDesc()).willReturn(cardList);
 
         UserDetailsImpl testUserDetails = new UserDetailsImpl(kim);
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
