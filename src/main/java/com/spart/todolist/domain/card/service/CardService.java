@@ -108,7 +108,7 @@ public class CardService {
         }
     }
 
-    private List<CommentResponseDto> commentList(Card card) {
+    public List<CommentResponseDto> commentList(Card card) {
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         List<Comment> commentList = card.getCommentList();
         commentList.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
