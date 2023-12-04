@@ -25,17 +25,19 @@ public class CommentController {
     private final CommentSerivce commentSerivce;
 
     @PostMapping
-    public ResponseEntity<CreateCommentResponseDto> createComment(@PathVariable Long cardId,
-        @AuthenticationPrincipal
-        UserDetailsImpl userDetails, @RequestBody CommentRequestDto requestDto) {
+    public ResponseEntity<CreateCommentResponseDto> createComment(
+        @PathVariable(name = "cardId") Long cardId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody CommentRequestDto requestDto) {
         CreateCommentResponseDto resuponseDto = commentSerivce.createComment(cardId,
             userDetails.getUser(), requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(resuponseDto);
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<UpdateCommentResponseDto> updateComment(@PathVariable Long cardId,
-        @PathVariable Long commentId,
+    public ResponseEntity<UpdateCommentResponseDto> updateComment(
+        @PathVariable(name = "cardId") Long cardId,
+        @PathVariable(name = "commentId") Long commentId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody CommentRequestDto requestDto) {
         UpdateCommentResponseDto responseDto = commentSerivce.updateComment(cardId, commentId,

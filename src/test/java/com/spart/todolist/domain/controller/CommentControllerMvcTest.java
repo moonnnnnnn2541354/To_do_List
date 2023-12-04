@@ -1,16 +1,25 @@
 package com.spart.todolist.domain.controller;
 
+import static com.spart.todolist.domain.card.constant.PostConstant.DEFAULT_COMPLETE;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spart.todolist.domain.card.entity.Card;
+import com.spart.todolist.domain.comment.controller.CommentController;
+import com.spart.todolist.domain.comment.dto.CommentRequestDto;
+import com.spart.todolist.domain.comment.dto.CreateCommentResponseDto;
+import com.spart.todolist.domain.comment.dto.UpdateCommentResponseDto;
+import com.spart.todolist.domain.comment.entity.Comment;
+import com.spart.todolist.domain.comment.service.CommentSerivce;
 import com.spart.todolist.domain.mvcfilter.MockSpringSecurityFilter;
-import com.spart.todolist.domain.user.controller.UserController;
-import com.spart.todolist.domain.user.dto.UserRequestDto;
 import com.spart.todolist.domain.user.entity.User;
-import com.spart.todolist.domain.user.service.UserService;
 import com.spart.todolist.global.config.WebSecurityConfig;
 import com.spart.todolist.global.jwt.JwtUtil;
 import com.spart.todolist.global.security.UserDetailsImpl;
@@ -30,10 +39,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@DisplayName("UserController 테스트")
+@DisplayName("CommentController 테스트")
 @MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(
-    controllers = {UserController.class},
+    controllers = {CommentController.class},
     excludeFilters = {
         @ComponentScan.Filter(
             type = FilterType.ASSIGNABLE_TYPE,
@@ -53,7 +62,7 @@ public class CommentControllerMvcTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    UserService userService;
+    CommentSerivce commentSerivce;
 
     @MockBean
     JwtUtil jwtUtil;
@@ -63,43 +72,85 @@ public class CommentControllerMvcTest {
         mvc = MockMvcBuilders.webAppContextSetup(context)
             .apply(springSecurity(new MockSpringSecurityFilter()))
             .build();
-    }
 
-    private void mockUserSetup() {
-        // Mock 테스트 유져 생성
-        String username = "dongmin0";
-        String password = "Qwer1234";
-        User testUser = new User(username, password);
-        UserDetailsImpl testUserDetails = new UserDetailsImpl(testUser);
+        User kim = User.builder().username("kim12345").password("12345678").build();
+
+        UserDetailsImpl testUserDetails = new UserDetailsImpl(kim);
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
     }
 
+
     @Test
-    @DisplayName("회원가입")
-    void signup() throws Exception {
-        String username = "dongmin0";
-        String password = "Qwer1234";
-        UserRequestDto requestDto = new UserRequestDto(username,password);
+    @DisplayName("댓글 작성")
+    void createComment() throws Exception {
+        User kim = User.builder().username("kim12345").password("12345678").build();
+        Long cardId = 1L;
+        Card card = Card.builder()
+            .title("나는 제목")
+            .content("나는 내용")
+            .complete(DEFAULT_COMPLETE)
+            .user(kim)
+            .build();
+
+        CommentRequestDto requestDto = new CommentRequestDto("댓글");
+        Comment comment = Comment.builder()
+            .content(requestDto.getContent())
+            .card(card)
+            .user(kim)
+            .build();
+        CreateCommentResponseDto responseDto = new CreateCommentResponseDto(comment,kim);
         String json = objectMapper.writeValueAsString(requestDto);
-        mvc.perform(post("/api/users/signup")
+
+        given(commentSerivce.createComment(anyLong(),any(User.class),any(CommentRequestDto.class)))
+            .willReturn(responseDto);
+
+        mvc.perform(post("/api/{cardId}/comments",cardId)
                 .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .principal(mockPrincipal))
             .andExpect(status().isCreated())
             .andDo(print());
     }
 
     @Test
-    @DisplayName("로그인")
-    void login() throws Exception {
-        String username = "dongmin0";
-        String password = "Qwer1234";
-        UserRequestDto requestDto = new UserRequestDto(username,password);
+    @DisplayName("댓글 수정")
+    void updateComment() throws Exception {
+        User kim = User.builder().username("kim12345").password("12345678").build();
+        Long cardId = 1L;
+        Card card = Card.builder()
+            .title("나는 제목")
+            .content("나는 내용")
+            .complete(DEFAULT_COMPLETE)
+            .user(kim)
+            .build();
+        Long commentId = 1L;
+        CommentRequestDto requestDto = new CommentRequestDto("댓글수정");
+        Comment comment = Comment.builder()
+            .content("댓글")
+            .card(card)
+            .user(kim)
+            .build();
+        UpdateCommentResponseDto responseDto = new UpdateCommentResponseDto(comment,kim.getUsername());
         String json = objectMapper.writeValueAsString(requestDto);
-        mvc.perform(post("/api/users/login")
+
+        given(commentSerivce.updateComment(anyLong(),anyLong(),any(User.class),any(CommentRequestDto.class)))
+            .willReturn(responseDto);
+
+        mvc.perform(put("/api/{cardId}/comments/{commentId}",cardId,commentId)
                 .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .principal(mockPrincipal))
             .andExpect(status().isOk())
             .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("댓글 삭제")
+    void deleteComment() throws Exception {
+
     }
 
 
